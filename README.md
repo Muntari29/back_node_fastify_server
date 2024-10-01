@@ -7,8 +7,6 @@
   </a>
 </div>
 
-<div align="center">
-
 # Environment
 ```
 node : v22
