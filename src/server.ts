@@ -1,10 +1,9 @@
 import fastify from "fastify";
+import firstRoute from "./routes/first_route";
 
 const server = fastify();
 
-server.get("/ping", async (request, reply) => {
-  return "pong\n";
-});
+server.register(firstRoute);
 
 server.listen({ port: 8080 }, (err, address) => {
   if (err) {
