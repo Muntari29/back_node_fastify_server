@@ -1,6 +1,9 @@
 import fastify from "fastify";
 import firstRoute from "./routes/first_route";
-import dbConnector from "./plugins/dbConnector";
+import dbConnector from "./plugins/register/dbConnector";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const server = fastify();
 
