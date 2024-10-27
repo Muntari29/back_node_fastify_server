@@ -10,8 +10,14 @@ import fp from "fastify-plugin";
 const dbConnector = fp(async (fastify: FastifyInstance) => {
   // MySQL connection settings
   fastify.register(fastifyMySql, {
+    promise: true,
     connectionString: `mysql://root:${process.env.MYSQL_DB_ROOT_PASSWORD}@localhost/sys`,
   });
+  fastify.ready(() => {
+    // const mysql = fastify.mysql; // MySQL 풀 가져오기
+    console.log("MySQL is ready");
+  });
+
 });
 
 export default dbConnector;

@@ -1,74 +1,60 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import bcrypt from "bcrypt";
 
-interface AnimalParams {
-  animal: string; // animal은 문자열이어야 함을 명시
+interface User {
+  name: string;
+  birthdate: string; // 'YYYY-MM-DD' 형식의 문자열
+  gender: "Male" | "Female" | "Other";
+  nickname: string;
+  password: string;
 }
 
-/**
- * A plugin that provide encapsulated routes
- * @param {FastifyInstance} fastify encapsulated fastify instance
- * @param {Object} options plugin options, refer to https://fastify.dev/docs/latest/Reference/Plugins/#plugin-options
- */
 async function routes(fastify: FastifyInstance, options: Object) {
-  // const collection = fastify.mongo.db?.collection("test_collection");
+  const connection = await fastify.mysql;
 
-  // if (!collection) {
-  //   throw new Error("MongoDB collection not found");
-  // }
+  // fastify.get("/", async (request, reply) => {
+  //   return { hello: "world" };
+  // });
 
   fastify.get("/", async (request, reply) => {
-    return { hello: "world" };
+    // const connection = await fastify.mysql.getConnection();
+    // Now you can use the connection to run queries
+    const result = await connection.query("SELECT * FROM sys_config");
+    reply.send(result);
+    // Don't forget to release the connection back to the pool
+    // connection.release();
   });
 
-  // fastify.get("/ping", async (request, reply) => {
-  //   return "pong\n";
-  // });
-
-  // fastify.get("/animals", async (request, reply) => {
-  //   const result = await collection.find().toArray();
-  //   if (result.length === 0) {
-  //     throw new Error("No documents found");
-  //   }
-  //   return result;
-  // });
-
-  // fastify.get(
-  //   "/animals/:animal",
-  //   async (
-  //     request: FastifyRequest<{ Params: AnimalParams }>,
-  //     reply: FastifyReply
-  //   ) => {
-  //     const result = await collection.findOne({
-  //       animal: request.params.animal,
-  //     });
-  //     if (!result) {
-  //       throw new Error("Invalid value");
-  //     }
-  //     return result;
-  //   }
-  // );
-
-  // const animalBodyJsonSchema = {
-  //   type: "object",
-  //   required: ["animal"],
-  //   properties: {
-  //     animal: { type: "string" },
-  //   },
-  // };
-
-  // const schema = {
-  //   body: animalBodyJsonSchema,
-  // };
-
+  // 회원가입 로직 추가
   // fastify.post(
-  //   "/animals",
-  //   { schema },
-  //   async (request: FastifyRequest<{ Body: unknown }>, reply) => {
-  //     // we can use the `request.body` object to get the data sent by the client
-  //     const result = await collection.insertOne({
-  //       animal: (request as any).body.animal,
-  //     });
-  //     return result;
+  //   "/register",
+  //   async (request: FastifyRequest<{ Body: User }>, reply: FastifyReply) => {
+  //     const { name, birthdate, gender, nickname, password } = request.body;
+
+  //     // 비밀번호 해시화
+  //     const hashedPassword = await bcrypt.hash(password, 10); // 10은 saltRounds
+
+  //     // MySQL 데이터베이스에 사용자 추가
+  //     const query = `
+  //     INSERT INTO user (name, birthdate, gender, nickname, password)
+  //     VALUES (?, ?, ?, ?, ?)
+  //   `;
+
+  //     try {
+  //       await connection.query(query, [
+  //         name,
+  //         birthdate,
+  //         gender,
+  //         nickname,
+  //         hashedPassword,
+  //       ]);
+  //       reply.code(201).send({ message: "User registered successfully!" });
+  //     } catch (error) {
+  //       console.error(error);
+  //       reply.code(500).send({ message: "User registration failed." });
+  //     } finally {
+  //       connection.release();
+  //     }
   //   }
   // );
 }
