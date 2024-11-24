@@ -1,5 +1,5 @@
 import fastify from "fastify";
-import firstRoute from "./routes/first_route";
+import ContentsRoute from "./routes/contents_route";
 import dbConnector from "./plugins/register/dbConnector";
 import dotenv from "dotenv";
 
@@ -8,7 +8,7 @@ dotenv.config();
 const server = fastify();
 
 server.register(dbConnector);
-server.register(firstRoute);
+server.register(ContentsRoute);
 
 server.listen({ port: 8080 }, (err, address) => {
   if (err) {
