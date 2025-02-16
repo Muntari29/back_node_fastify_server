@@ -1,3 +1,4 @@
+// 기존 FastifyInstance 확장
 import {
   MySQLConnection,
   MySQLPool,
@@ -5,31 +6,17 @@ import {
   MySQLPromisePool,
 } from "@fastify/mysql";
 
-// // if you only pass connectionString
-// declare module "fastify" {
-//   interface FastifyInstance {
-//     mysql: MySQLPool;
-//   }
-// }
-
-// // if you passed type = 'connection'
-// declare module "fastify" {
-//   interface FastifyInstance {
-//     mysql: MySQLConnection;
-//   }
-// }
-
-// // if you passed promise = true
-// declare module "fastify" {
-//   interface FastifyInstance {
-//     mysql: MySQLPromisePool;
-//   }
-// }
-
 // if you passed promise = true, type = 'connection'
 declare module "fastify" {
   interface FastifyInstance {
-    mysql: MySQLPromiseConnection;
-    // mysql: MySQLPool;
+    // promise: true 옵션을 사용하면 MySQLPromisePool 타입을 사용해야 합니다.
+    mysql: MySQLPromisePool;
+  }
+}
+
+// FastifyRequest에 user 속성 추가
+declare module "fastify" {
+  interface FastifyRequest {
+    user?: any; // 필요한 경우 구체적인 타입으로 지정
   }
 }

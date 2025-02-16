@@ -1,19 +1,31 @@
 import fastify from "fastify";
-import ContentsRoute from "./routes/contents_route";
-import dbConnector from "./plugins/register/dbConnector";
 import dotenv from "dotenv";
+
+import publicGamesRoutes from "./routes/public/gamesRoutes";
+import publicUsersRoutes from "./routes/public/usersRoutes";
+import dbConnector from "./plugins/register/dbConnector";
 
 dotenv.config();
 
-const server = fastify();
+const server = fastify({ logger: true });
 
+// DB 플러그인 등록: fastify.mysql 로 MySQL 커넥션 풀에 접근 가능
 server.register(dbConnector);
-server.register(ContentsRoute);
 
-server.listen({ port: 8080 }, (err, address) => {
-  if (err) {
-    console.error(err);
+// Public API 엔드포인트 등록 (예: 게임 목록, 회원가입, 로그인)
+// URL 예시: http://localhost:8080/api/games, http://localhost:8080/api/register, http://localhost:8080/api/login
+server.register(publicGamesRoutes, { prefix: "/api" });
+server.register(publicUsersRoutes, { prefix: "/api" });
+
+// 서버 시작
+const start = async () => {
+  try {
+    await server.listen({ port: 8080, host: "0.0.0.0" });
+    console.log(`Server listening on ${server.server.address()}`);
+  } catch (err) {
+    server.log.error(err);
     process.exit(1);
   }
-  console.log(`Server listening at ${address}`);
-});
+};
+
+start();
