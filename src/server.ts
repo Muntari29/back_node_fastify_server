@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import publicGamesRoutes from "./routes/public/gamesRoutes";
 import publicUsersRoutes from "./routes/public/usersRoutes";
 import dbConnector from "./plugins/register/dbConnector";
+import privateAiRoutes from "./routes/private/aiRoutes";
 
 dotenv.config();
 
@@ -16,6 +17,8 @@ server.register(dbConnector);
 // URL 예시: http://localhost:8080/api/games, http://localhost:8080/api/register, http://localhost:8080/api/login
 server.register(publicGamesRoutes, { prefix: "/api" });
 server.register(publicUsersRoutes, { prefix: "/api" });
+
+server.register(privateAiRoutes, { prefix: "/api" });
 
 // 서버 시작
 const start = async () => {
