@@ -23,7 +23,7 @@ const dbConnector = fp(async (fastify: FastifyInstance) => {
     connectionString: `mysql://${process.env.MYSQL_USER || "root"}:${
       process.env.MYSQL_DB_ROOT_PASSWORD
     }@${process.env.MYSQL_HOST || "localhost"}/${
-      process.env.MYSQL_DB_NAME || "contents"
+      process.env.MYSQL_DB_NAME || "GP"
     }`,
   });
 
