@@ -5,6 +5,7 @@ import publicGamesRoutes from "./routes/public/gamesRoutes";
 import publicUsersRoutes from "./routes/public/usersRoutes";
 import dbConnector from "./plugins/register/dbConnector";
 import privateAiRoutes from "./routes/private/aiRoutes";
+import privateUsersRoutes from "./routes/private/usersRoutes";
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ server.register(publicGamesRoutes, { prefix: "/api" });
 server.register(publicUsersRoutes, { prefix: "/api" });
 
 server.register(privateAiRoutes, { prefix: "/api" });
+server.register(privateUsersRoutes, { prefix: "/api" });
 
 // 서버 시작
 const start = async () => {
